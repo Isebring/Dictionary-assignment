@@ -1,0 +1,48 @@
+header {
+  background-color: #fdfdfd;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 3rem;
+}
+
+.text-style {
+  color: #3e3e3e;
+  padding: 0.5rem;
+  text-align: center;
+  font-weight: 600;
+  align-self: center;
+  font-size: 1.8rem;
+}
+
+.hr-style {
+  height: 1px;
+  background-color: #e4dfdf;
+  border: none;
+}
+
+/* Dark mode styles */
+.dark header {
+  background-color: #242424;
+}
+
+.dark .text-style {
+  color: rgba(255, 255, 255, 0.87);
+}
+
+.dark .hr-style {
+  background-color: rgba(255, 255, 255, 0.1);
+}
+
+/* Light mode styles */
+.light header {
+  background-color: #fdfdfd;
+}
+
+.light .text-style {
+  color: #3e3e3e;
+}
+
+.light .hr-style {
+  background-color: #e4dfdf;
+}

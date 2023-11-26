@@ -1,7 +1,7 @@
-import axios from "axios";
-import { useEffect, useRef, useState } from "react";
-import Card from "../components/Card";
-import "./Landingpage.css";
+import axios from 'axios';
+import { useEffect, useRef, useState } from 'react';
+import Card from '../components/Card';
+import './Landingpage.css';
 
 export interface Word {
   word: string;
@@ -23,13 +23,13 @@ export interface Word {
 
 function Landingpage() {
   const [data, setData] = useState<Word[]>([]);
-  const [selectedWord, setSelectedWord] = useState<string>("");
+  const [selectedWord, setSelectedWord] = useState<string>('');
   const [searchedWord, setSearchedWord] = useState<Word | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [activeAudio, setActiveAudio] = useState<string | null>(null);
 
   const fetchWords = async () => {
-    if (selectedWord !== "") {
+    if (selectedWord !== '') {
       try {
         const response = await axios.get(
           `https://api.dictionaryapi.dev/api/v2/entries/en/${selectedWord}`
@@ -48,6 +48,11 @@ function Landingpage() {
   const handleSelect = () => {
     const word = data.find((word) => word.word === selectedWord) || null;
     setSearchedWord(word);
+  };
+
+  const handleFormSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    handleSelect();
   };
 
   useEffect(() => {
@@ -69,21 +74,28 @@ function Landingpage() {
 
   return (
     <div className="card">
-      <input
-        className="input-search"
-        type="search"
-        placeholder="Search for a word.."
-        value={selectedWord}
-        onChange={(e) => setSelectedWord(e.target.value)}
-      />
-      <button onClick={handleSelect}>Search</button>
-      {searchedWord && (
-        <Card
-          word={searchedWord}
-          activeAudio={activeAudio}
-          playAudio={playAudio}
+      <form onSubmit={handleFormSubmit}>
+        <input
+          className="input-search"
+          type="search"
+          placeholder="Search for a word.."
+          value={selectedWord}
+          onChange={(e) => setSelectedWord(e.target.value)}
         />
-      )}
+        <button
+          style={{ height: '3rem', marginLeft: '0.5rem' }}
+          onClick={handleSelect}
+        >
+          Search
+        </button>
+        {searchedWord && (
+          <Card
+            word={searchedWord}
+            activeAudio={activeAudio}
+            playAudio={playAudio}
+          />
+        )}
+      </form>
     </div>
   );
 }
