@@ -1,5 +1,6 @@
 import { IconMoon, IconSun } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
+import Landingpage from "./pages/Landingpage";
 
 function App() {
   const [darkMode, setDarkMode] = useState(false);
@@ -23,6 +24,7 @@ function App() {
           {darkMode ? <IconMoon /> : <IconSun />}
           <label htmlFor="Light : Dark ">{darkMode ? "Dark" : "Light"}</label>
         </button>
+        <Landingpage />
       </div>
     </div>
   );
