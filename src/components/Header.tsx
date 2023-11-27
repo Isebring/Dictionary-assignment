@@ -19,13 +19,22 @@ function Header() {
   return (
     <>
       <header>
+        <h1 className="text-style">
+          My Dictionary
+          <span style={{ color: '#89CFF0' }}>.</span>
+        </h1>
         <div className={`App ${darkMode ? 'dark' : 'light'}`}>
-          <button className="toggle-container" onClick={toggleDarkMode}>
+          <button
+            style={{ marginRight: '1rem' }}
+            className="toggle-container"
+            onClick={toggleDarkMode}
+          >
             {darkMode ? <IconMoon /> : <IconSun />}
-            <label htmlFor="Light : Dark ">{darkMode ? 'Dark' : 'Light'}</label>
+            <label htmlFor="Light and Dark mode toggle ">
+              {darkMode ? 'Dark' : 'Light'}
+            </label>
           </button>
         </div>
-        <h1 className="text-style">My Dictionary</h1>
       </header>
       <hr className="hr-style" />
     </>

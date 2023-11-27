@@ -27,6 +27,7 @@
 .input-search {
   margin-bottom: 1rem;
   height: 3rem;
+  width: 100%;
   border-style: solid;
   border-color: lightgrey;
   border-radius: 0.5rem;

@@ -82,10 +82,7 @@ function Landingpage() {
           value={selectedWord}
           onChange={(e) => setSelectedWord(e.target.value)}
         />
-        <button
-          style={{ height: '3rem', marginLeft: '0.5rem' }}
-          onClick={handleSelect}
-        >
+        <button style={{ height: '3rem' }} onClick={handleSelect}>
           Search
         </button>
         {searchedWord && (
