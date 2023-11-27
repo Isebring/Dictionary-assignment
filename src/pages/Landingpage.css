@@ -3,7 +3,8 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1rem;
+  justify-content: space-around;
+  padding: 2rem;
   border-radius: 8px;
   transition: box-shadow 0.3s ease-in-out;
   margin: 1.5rem auto;
@@ -13,7 +14,7 @@
 }
 
 .dark .card {
-  background-color: #242424;
+  background-color: #313131;
   color: rgba(255, 255, 255, 0.87);
   box-shadow: 0px 4px 8px rgba(255, 255, 255, 0.1);
 }
@@ -24,17 +25,20 @@
   box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
 }
 
+.search-container {
+  display: flex;
+  justify-content: center;
+}
+
 .input-search {
-  margin-bottom: 1rem;
   height: 3rem;
-  width: 100%;
   border-style: solid;
   border-color: lightgrey;
   border-radius: 0.5rem;
   background-color: #ffffff;
   color: #213547;
   padding-left: 1rem;
-  padding-right: 3rem;
+  padding-right: 1rem;
 }
 
 .dark .input-search {
@@ -45,4 +49,9 @@
 .light .input-search {
   background-color: #ffffff;
   color: #213547;
+}
+
+.error-messages {
+  display: flex;
+  justify-content: center;
 }

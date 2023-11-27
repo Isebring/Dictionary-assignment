@@ -1,7 +1,8 @@
-import axios from 'axios';
-import { useEffect, useRef, useState } from 'react';
-import Card from '../components/Card';
-import './Landingpage.css';
+import axios from "axios";
+import { useEffect, useRef, useState } from "react";
+import { validateInput } from "../ValidateInput";
+import Card from "../components/Card";
+import "./Landingpage.css";
 
 export interface Word {
   word: string;
@@ -23,31 +24,51 @@ export interface Word {
 
 function Landingpage() {
   const [data, setData] = useState<Word[]>([]);
-  const [selectedWord, setSelectedWord] = useState<string>('');
+  const [selectedWord, setSelectedWord] = useState<string>("");
   const [searchedWord, setSearchedWord] = useState<Word | null>(null);
+  const [errorMessage, setErrorMessage] = useState<Record<
+    string,
+    string
+  > | null>(null);
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const [activeAudio, setActiveAudio] = useState<string | null>(null);
+  const [isSubmitted, setIsSubmitted] = useState(false);
 
   const fetchWords = async () => {
-    if (selectedWord !== '') {
+    if (selectedWord !== "") {
       try {
         const response = await axios.get(
           `https://api.dictionaryapi.dev/api/v2/entries/en/${selectedWord}`
         );
         setData(response.data);
+        setErrorMessage(null);
+        const word = data.find((word) => word.word === selectedWord) || null;
+        setSearchedWord(word);
       } catch (error) {
-        console.error(`Error: ${error}`);
+        if (axios.isAxiosError(error) && error.response?.status === 404) {
+          setErrorMessage({ notFound: "Word not found!" });
+        } else {
+          console.error(`Error: ${error}`);
+        }
       }
     }
   };
 
   useEffect(() => {
-    fetchWords();
-  }, [selectedWord]);
+    if (isSubmitted) {
+      fetchWords();
+    }
+  }, [isSubmitted]);
 
   const handleSelect = () => {
-    const word = data.find((word) => word.word === selectedWord) || null;
-    setSearchedWord(word);
+    setErrorMessage(null);
+    const errors = validateInput(selectedWord);
+    console.log(errors);
+    if (Object.keys(errors).length > 0) {
+      setErrorMessage(errors);
+      return;
+    }
+    setIsSubmitted((prevState) => !prevState);
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {
@@ -75,16 +96,43 @@ function Landingpage() {
   return (
     <div className="card">
       <form onSubmit={handleFormSubmit}>
-        <input
-          className="input-search"
-          type="search"
-          placeholder="Search for a word.."
-          value={selectedWord}
-          onChange={(e) => setSelectedWord(e.target.value)}
-        />
-        <button style={{ height: '3rem' }} onClick={handleSelect}>
-          Search
-        </button>
+        <div className="search-container">
+          <input
+            className="input-search"
+            type="search"
+            placeholder="Search for a word.."
+            value={selectedWord}
+            onChange={(e) => {
+              setSelectedWord(e.target.value);
+              if (e.target.value.trim() === "" || errorMessage) {
+                setErrorMessage(null);
+                setIsSubmitted(false);
+              }
+            }}
+          />
+          <button
+            style={{ height: "3rem", marginLeft: "1rem" }}
+            onClick={handleSelect}
+          >
+            Search
+          </button>
+        </div>
+        <div className="error-messages">
+          {errorMessage &&
+            Object.entries(errorMessage).map(([key, value]) => (
+              <div key={key}>
+                <p
+                  style={{
+                    color: "red",
+                    justifyContent: "center",
+                    whiteSpace: "pre",
+                  }}
+                >
+                  {value}
+                </p>
+              </div>
+            ))}
+        </div>
         {searchedWord && (
           <Card
             word={searchedWord}

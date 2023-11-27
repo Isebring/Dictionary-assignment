@@ -1,13 +1,13 @@
-import Header from './components/Header';
-import Landingpage from './pages/Landingpage';
+import Header from "./components/Header";
+import Landingpage from "./pages/Landingpage";
 
 function App() {
   return (
     <>
       <Header />
-      <div className="container">
+      <main className="container">
         <Landingpage />
-      </div>
+      </main>
     </>
   );
 }

@@ -1,6 +1,6 @@
-import { IconVolume } from '@tabler/icons-react';
-import React, { useEffect, useRef } from 'react';
-import { Word } from '../pages/Landingpage';
+import { IconVolume } from "@tabler/icons-react";
+import React, { useEffect, useRef } from "react";
+import { Word } from "../pages/Landingpage";
 
 interface CardProps {
   word: Word;
@@ -26,21 +26,23 @@ const Card: React.FC<CardProps> = ({ word, activeAudio }) => {
 
   return (
     <div>
-      {/* <h4>Word:</h4> */}
-      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
+      <div style={{ display: "flex", justifyContent: "space-between" }}>
         <h2>{word.word}</h2>
-        {word.phonetics && word.phonetics[0] && (
+        {word.phonetics && (
           <div>
             {activeAudio && (
               <div>
-                {/* <p>Audio:</p> */}
                 <audio ref={audioRef} />
                 <source src={activeAudio} type="audio/mpeg" />
-                <IconVolume style={{ cursor: 'pointer' }} onClick={playAudio} />
+                <IconVolume style={{ cursor: "pointer" }} onClick={playAudio} />
               </div>
             )}
-            {/* <h4>Phonetics:</h4> */}
-            <p>{word.phonetics[0].text}</p>
+            {word.phonetics.slice(0, 5).map((phonetic, index) => (
+              <div key={index}>
+                <p>{phonetic.text}</p>
+              </div>
+            ))}
+            {word.phonetics.length > 5 && "..."}
           </div>
         )}
       </div>
@@ -50,38 +52,43 @@ const Card: React.FC<CardProps> = ({ word, activeAudio }) => {
           <p>{word.origin}</p>
         </div>
       )}
-      {word.meanings && word.meanings[0] && (
-        <div>
-          {/* <h4>Part of Speech:</h4> */}
-          <p>{word.meanings[0].partOfSpeech}</p>
-          {word.meanings[0].definitions && word.meanings[0].definitions[0] && (
-            <div>
-              <h4>Definition:</h4>
-              <p>{word.meanings[0].definitions[0].definition}</p>
-              {word.meanings[0].definitions[0].example && (
-                <div>
-                  <h4>Example:</h4>
-                  <p>{word.meanings[0].definitions[0].example}</p>
+      {word.meanings &&
+        word.meanings.slice(0, 5).map((meaning, index) => (
+          <div key={index}>
+            <p>{meaning.partOfSpeech}</p>
+            {meaning.definitions &&
+              meaning.definitions.slice(0, 5).map((definition, defIndex) => (
+                <div key={defIndex}>
+                  <h4>Definition:</h4>
+                  <p>{definition.definition}</p>
+                  {definition.example && (
+                    <div>
+                      <h4>Example:</h4>
+                      <p>{definition.example}</p>
+                    </div>
+                  )}
+                  {definition.synonyms && definition.synonyms.length > 0 && (
+                    <div>
+                      <h4>Synonyms:</h4>
+                      <p>
+                        {definition.synonyms.slice(0, 5).join(", ")}
+                        {definition.synonyms.length > 5 && ",..."}
+                      </p>
+                    </div>
+                  )}
+                  {definition.antonyms && definition.antonyms.length > 0 && (
+                    <div>
+                      <h4>Antonyms:</h4>
+                      <p>
+                        {definition.antonyms.slice(0, 5).join(", ")}
+                        {definition.antonyms.length > 5 && ",..."}
+                      </p>
+                    </div>
+                  )}
                 </div>
-              )}
-              {word.meanings[0].definitions[0].synonyms &&
-                word.meanings[0].definitions[0].synonyms.length > 0 && (
-                  <div>
-                    <h4>Synonyms:</h4>
-                    <p>{word.meanings[0].definitions[0].synonyms.join(', ')}</p>
-                  </div>
-                )}
-              {word.meanings[0].definitions[0].antonyms &&
-                word.meanings[0].definitions[0].antonyms.length > 0 && (
-                  <div>
-                    <h4>Antonyms:</h4>
-                    <p>{word.meanings[0].definitions[0].antonyms.join(', ')}</p>
-                  </div>
-                )}
-            </div>
-          )}
-        </div>
-      )}
+              ))}
+          </div>
+        ))}
     </div>
   );
 };
