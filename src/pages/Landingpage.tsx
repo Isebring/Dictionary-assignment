@@ -41,8 +41,9 @@ function Landingpage() {
           `https://api.dictionaryapi.dev/api/v2/entries/en/${selectedWord}`
         );
         setData(response.data);
-        setErrorMessage(null);
-        const word = data.find((word) => word.word === selectedWord) || null;
+        const word =
+          response.data.find((word: Word) => word.word === selectedWord) ||
+          null;
         setSearchedWord(word);
       } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 404) {
@@ -68,7 +69,7 @@ function Landingpage() {
       setErrorMessage(errors);
       return;
     }
-    setIsSubmitted((prevState) => !prevState);
+    setIsSubmitted(true);
   };
 
   const handleFormSubmit = (e: React.FormEvent) => {

@@ -103,7 +103,7 @@ describe("Dark Mode toggle", () => {
 
       fireEvent.change(inputField, { target: { value: "invalidword" } });
       fireEvent.click(searchButton);
-
+      screen.debug();
       await screen.findByText("Word not found!");
 
       expect(screen.getByText("Word not found!")).toBeInTheDocument();
