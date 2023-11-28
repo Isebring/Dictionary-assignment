@@ -9,9 +9,9 @@ import {
   test,
 } from "vitest";
 import App from "../App";
-import { validateInput } from "../ValidateInput";
 import Landingpage from "../pages/Landingpage";
 import { server } from "../server";
+import { validateInput } from "../validatedInput";
 
 // Check so that the page starts in light mode and correctly shifts between light and dark when the user clicks.
 describe("Dark Mode toggle", () => {

@@ -1,7 +1,8 @@
 import axios from "axios";
 import { useEffect, useRef, useState } from "react";
-import { validateInput } from "../ValidateInput";
-import Card from "../components/Card";
+import FavoritesList from "../components/FavoriteList";
+import Card from "../components/WordCard";
+import { validateInput } from "../validatedInput";
 import "./Landingpage.css";
 
 export interface Word {
@@ -95,54 +96,57 @@ function Landingpage() {
   };
 
   return (
-    <div className="card">
-      <form onSubmit={handleFormSubmit}>
-        <div className="search-container">
-          <input
-            className="input-search"
-            type="search"
-            placeholder="Search for a word.."
-            value={selectedWord}
-            onChange={(e) => {
-              setSelectedWord(e.target.value);
-              if (e.target.value.trim() === "" || errorMessage) {
-                setErrorMessage(null);
-                setIsSubmitted(false);
-              }
-            }}
-          />
-          <button
-            style={{ height: "3rem", marginLeft: "1rem" }}
-            onClick={handleSelect}
-          >
-            Search
-          </button>
-        </div>
-        <div className="error-messages">
-          {errorMessage &&
-            Object.entries(errorMessage).map(([key, value]) => (
-              <div key={key}>
-                <p
-                  style={{
-                    color: "red",
-                    justifyContent: "center",
-                    whiteSpace: "pre",
-                  }}
-                >
-                  {value}
-                </p>
-              </div>
-            ))}
-        </div>
-        {searchedWord && (
-          <Card
-            word={searchedWord}
-            activeAudio={activeAudio}
-            playAudio={playAudio}
-          />
-        )}
-      </form>
-    </div>
+    <>
+      <div className="card">
+        <form onSubmit={handleFormSubmit}>
+          <div className="search-container">
+            <input
+              className="input-search"
+              type="search"
+              placeholder="Search for a word.."
+              value={selectedWord}
+              onChange={(e) => {
+                setSelectedWord(e.target.value);
+                if (e.target.value.trim() === "" || errorMessage) {
+                  setErrorMessage(null);
+                  setIsSubmitted(false);
+                }
+              }}
+            />
+            <button
+              style={{ height: "3rem", marginLeft: "1rem" }}
+              onClick={handleSelect}
+            >
+              Search
+            </button>
+          </div>
+          <div className="error-messages">
+            {errorMessage &&
+              Object.entries(errorMessage).map(([key, value]) => (
+                <div key={key}>
+                  <p
+                    style={{
+                      color: "red",
+                      justifyContent: "center",
+                      whiteSpace: "pre",
+                    }}
+                  >
+                    {value}
+                  </p>
+                </div>
+              ))}
+          </div>
+          {searchedWord && (
+            <Card
+              word={searchedWord}
+              activeAudio={activeAudio}
+              playAudio={playAudio}
+            />
+          )}
+        </form>
+      </div>
+      <FavoritesList />
+    </>
   );
 }
 

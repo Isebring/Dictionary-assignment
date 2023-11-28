@@ -1,14 +1,15 @@
-import { IconVolume } from "@tabler/icons-react";
-import React, { useEffect, useRef } from "react";
+import { IconHeart, IconVolume } from "@tabler/icons-react";
+import React, { useContext, useEffect, useRef } from "react";
+import FavoritesContext from "../FavoritesContext";
 import { Word } from "../pages/Landingpage";
 
-interface CardProps {
+interface WordCardProps {
   word: Word;
   activeAudio: string | null;
   playAudio: () => void;
 }
 
-const Card: React.FC<CardProps> = ({ word, activeAudio }) => {
+const Card: React.FC<WordCardProps> = ({ word, activeAudio }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -24,8 +25,26 @@ const Card: React.FC<CardProps> = ({ word, activeAudio }) => {
     }
   };
 
+  const favoritesContext = useContext(FavoritesContext);
+
+  const { addFavorite, removeFavorite, isFavorite } = favoritesContext;
+
+  const toggleFavorite = () => {
+    if (isFavorite(word.word)) {
+      removeFavorite(word.word);
+    } else {
+      addFavorite(word.word);
+    }
+  };
+
   return (
     <div>
+      <IconHeart
+        style={{ marginTop: "1rem" }}
+        fill={isFavorite(word.word) ? "red" : "none"}
+        stroke={isFavorite(word.word) ? "red" : "black"}
+        onClick={toggleFavorite}
+      />
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <h2>{word.word}</h2>
         {word.phonetics && (
