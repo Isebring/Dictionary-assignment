@@ -11,9 +11,29 @@ const FavoritesList: React.FC = () => {
       {favorites.length > 0 ? (
         favorites.map((favorite: string, index: number) => (
           <div key={index} style={{ marginTop: "1rem" }}>
-            <div style={{ display: "flex", justifyContent: "space-between" }}>
-              {favorite}
-              <IconTrash fill="red" onClick={() => removeFavorite(favorite)} />
+            <div
+              style={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "",
+              }}
+            >
+              <p style={{ alignSelf: "flex-end", fontSize: "1.1rem" }}>
+                {favorite}
+              </p>
+              <button
+                style={{
+                  background: "#FF0000",
+                  color: "#FFFF",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                }}
+                onClick={() => removeFavorite(favorite)}
+              >
+                <IconTrash style={{ marginRight: "0.5rem" }} size={20} />
+                Remove
+              </button>
             </div>
             <hr className="hr-style" style={{ marginTop: "0.3rem" }} />
           </div>

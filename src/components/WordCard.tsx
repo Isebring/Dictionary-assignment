@@ -47,11 +47,12 @@ const Card: React.FC<WordCardProps> = ({ word, activeAudio }) => {
       />
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         <h2>{word.word}</h2>
+
         {word.phonetics && (
           <div>
             {activeAudio && (
               <div>
-                <audio ref={audioRef} />
+                <audio role="audio" ref={audioRef} />
                 <source src={activeAudio} type="audio/mpeg" />
                 <IconVolume style={{ cursor: "pointer" }} onClick={playAudio} />
               </div>
@@ -65,6 +66,7 @@ const Card: React.FC<WordCardProps> = ({ word, activeAudio }) => {
           </div>
         )}
       </div>
+
       {word.origin && (
         <div>
           <h4>Origin:</h4>
@@ -72,42 +74,78 @@ const Card: React.FC<WordCardProps> = ({ word, activeAudio }) => {
         </div>
       )}
       {word.meanings &&
-        word.meanings.slice(0, 5).map((meaning, index) => (
-          <div key={index}>
-            <p>{meaning.partOfSpeech}</p>
-            {meaning.definitions &&
-              meaning.definitions.slice(0, 5).map((definition, defIndex) => (
-                <div key={defIndex}>
-                  <h4>Definition:</h4>
-                  <p>{definition.definition}</p>
-                  {definition.example && (
-                    <div>
-                      <h4>Example:</h4>
-                      <p>{definition.example}</p>
+        word.meanings.map((meaning, index) => {
+          let definitionCounter = 0;
+          return (
+            <div key={index}>
+              <hr
+                style={{ marginTop: "0.5rem", marginBottom: "0.5rem" }}
+                className="hr-style"
+              />
+              <p
+                style={{
+                  fontWeight: "700",
+                  fontSize: "1.1rem",
+                  marginBottom: "1rem",
+                }}
+              >
+                {meaning.partOfSpeech}
+              </p>
+              {meaning.definitions &&
+                meaning.definitions.map((definition, defIndex) => {
+                  if (definitionCounter >= 5) return null;
+                  definitionCounter++;
+                  return (
+                    <div key={defIndex}>
+                      <h4>Definition:</h4>
+                      <p>{definition.definition}</p>
+                      {definition.example && (
+                        <div>
+                          <h4>Example:</h4>
+                          <p>{definition.example}</p>
+                        </div>
+                      )}
                     </div>
-                  )}
-                  {definition.synonyms && definition.synonyms.length > 0 && (
-                    <div>
-                      <h4>Synonyms:</h4>
-                      <p>
-                        {definition.synonyms.slice(0, 5).join(", ")}
-                        {definition.synonyms.length > 5 && ",..."}
-                      </p>
-                    </div>
-                  )}
-                  {definition.antonyms && definition.antonyms.length > 0 && (
-                    <div>
-                      <h4>Antonyms:</h4>
-                      <p>
-                        {definition.antonyms.slice(0, 5).join(", ")}
-                        {definition.antonyms.length > 5 && ",..."}
-                      </p>
-                    </div>
-                  )}
+                  );
+                })}
+              {meaning.synonyms && meaning.synonyms.length > 0 && (
+                <div>
+                  <h4>Synonyms:</h4>
+                  <p>
+                    {meaning.synonyms.slice(0, 5).join(", ")}
+                    {meaning.synonyms.length > 6 && ",..."}
+                  </p>
                 </div>
-              ))}
-          </div>
-        ))}
+              )}
+              {meaning.antonyms && meaning.antonyms.length > 0 && (
+                <div>
+                  <h4>Antonyms:</h4>
+                  <p>
+                    {meaning.antonyms.slice(0, 5).join(", ")}
+                    {meaning.antonyms.length > 6 && ",..."}
+                  </p>
+                </div>
+              )}
+            </div>
+          );
+        })}
+      <hr
+        style={{ marginTop: "0.5rem", marginBottom: "0.5rem" }}
+        className="hr-style"
+      />
+      {word.sourceUrls && (
+        <div style={{ marginTop: "1rem" }}>
+          <h4>Source:</h4>
+          <a
+            href={word.sourceUrls}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="sourceLink"
+          >
+            {word.sourceUrls}
+          </a>
+        </div>
+      )}
     </div>
   );
 };

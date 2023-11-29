@@ -13,6 +13,15 @@ import Landingpage from "../pages/Landingpage";
 import { server } from "../server";
 import { validateInput } from "../validatedInput";
 
+// Check so that the <h1> renders correctly
+test("renders h1 tag correctly", () => {
+  render(<App />);
+
+  const h1Element = screen.getByRole("heading", { level: 1 });
+  expect(h1Element).toBeInTheDocument();
+  expect(h1Element.textContent).toBe("My Dictionary.");
+});
+
 // Check so that the page starts in light mode and correctly shifts between light and dark when the user clicks.
 describe("Dark Mode toggle", () => {
   it("starts in light mode and toggles between light and dark mode", () => {
@@ -76,6 +85,8 @@ describe("Dark Mode toggle", () => {
     });
   });
 
+  // Using the mock server from mswjs here to check that everything from the API renders correctly
+
   beforeAll(() => server.listen());
   afterEach(() => server.resetHandlers());
   afterAll(() => server.close());
@@ -84,16 +95,39 @@ describe("Dark Mode toggle", () => {
     it("fetches and displays word data when a valid word is searched", async () => {
       render(<Landingpage />);
       const inputField = screen.getByPlaceholderText("Search for a word..");
-      const searchButton = screen.getByText("Search");
+      const searchButton = screen.getByRole("button", { name: /search/i });
 
       fireEvent.change(inputField, { target: { value: "test" } });
       fireEvent.click(searchButton);
 
-      await screen.findByText("test");
+      expect(
+        await screen.findByRole("heading", { name: /test/i })
+      ).toBeInTheDocument();
 
-      expect(screen.getByText("test")).toBeInTheDocument();
-      expect(screen.getByText("/tɛst/")).toBeInTheDocument();
-      expect(screen.getByText("Origin of test")).toBeInTheDocument();
+      expect(await screen.findByRole("audio")).toBeInTheDocument();
+
+      const phoneticItems = await screen.findAllByText(/\/.*\//);
+      expect(phoneticItems).not.toHaveLength(0);
+
+      const partOfSpeechItems = await screen.findAllByText(
+        /noun|verb|adjective|adverb|pronoun|preposition|conjunction|interjection|article/
+      );
+      expect(partOfSpeechItems).not.toHaveLength(0);
+
+      const definitionItems = await screen.findAllByText(/Definition:/);
+      expect(definitionItems).not.toHaveLength(0);
+
+      const exampleItems = await screen.findAllByText(/Example:/);
+      expect(exampleItems).not.toHaveLength(0);
+
+      const synonymItems = await screen.findAllByText(/Synonyms:/);
+      expect(synonymItems).not.toHaveLength(0);
+
+      const antonymItems = await screen.findAllByText(/Antonyms:/);
+      expect(antonymItems).not.toHaveLength(0);
+
+      const originItem = await screen.findByText(/Origin:/);
+      expect(originItem).toBeInTheDocument();
     });
 
     it("displays an error message when a word is not found", async () => {

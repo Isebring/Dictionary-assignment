@@ -16,11 +16,12 @@ export interface Word {
     partOfSpeech: string;
     definitions: Array<{
       definition: string;
-      example?: string;
-      synonyms?: string[];
-      antonyms?: string[];
+      example: string;
     }>;
+    synonyms: string[];
+    antonyms: string[];
   }>;
+  sourceUrls: string;
 }
 
 function Landingpage() {
@@ -41,6 +42,7 @@ function Landingpage() {
         const response = await axios.get(
           `https://api.dictionaryapi.dev/api/v2/entries/en/${selectedWord}`
         );
+        console.log(response);
         setData(response.data);
         const word =
           response.data.find((word: Word) => word.word === selectedWord) ||

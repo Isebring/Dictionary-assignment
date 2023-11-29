@@ -23,6 +23,7 @@ export const handlers = [
                   definition: 'A procedure intended to establish...',
                   example: 'This is a test.',
                   synonyms: ['trial', 'experiment'],
+                  antonyms: ['success', 'achievement'],
                 },
               ],
             },
