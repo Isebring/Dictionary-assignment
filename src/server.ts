@@ -17,13 +17,13 @@ export const handlers = [
           origin: 'Origin of test',
           meanings: [
             {
+              synonyms: ['trial', 'experiment'],
+              antonyms: ['success', 'achievement'],
               partOfSpeech: 'noun',
               definitions: [
                 {
                   definition: 'A procedure intended to establish...',
                   example: 'This is a test.',
-                  synonyms: ['trial', 'experiment'],
-                  antonyms: ['success', 'achievement'],
                 },
               ],
             },
