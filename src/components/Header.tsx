@@ -1,15 +1,15 @@
-import { IconMoon, IconSun } from '@tabler/icons-react';
-import { useEffect, useState } from 'react';
-import './Header.css';
+import { IconMoon, IconSun } from "@tabler/icons-react";
+import { useEffect, useState } from "react";
+import "./Header.css";
 
 function Header() {
   const [darkMode, setDarkMode] = useState(false);
 
   useEffect(() => {
     if (darkMode) {
-      document.documentElement.classList.add('dark');
+      document.documentElement.classList.add("dark");
     } else {
-      document.documentElement.classList.remove('dark');
+      document.documentElement.classList.remove("dark");
     }
   }, [darkMode]);
 
@@ -21,17 +21,17 @@ function Header() {
       <header>
         <h1 className="text-style">
           My Dictionary
-          <span style={{ color: '#89CFF0' }}>.</span>
+          <span style={{ color: "#89CFF0" }}>.</span>
         </h1>
-        <div className={`App ${darkMode ? 'dark' : 'light'}`}>
+        <div className={`App ${darkMode ? "dark" : "light"}`}>
           <button
-            style={{ marginRight: '1rem' }}
+            style={{ marginRight: "1rem" }}
             className="toggle-container"
             onClick={toggleDarkMode}
           >
-            {darkMode ? <IconMoon /> : <IconSun />}
+            {darkMode ? <IconSun /> : <IconMoon />}
             <label htmlFor="Light and Dark mode toggle ">
-              {darkMode ? 'Dark' : 'Light'}
+              {darkMode ? "Light" : "Dark"}
             </label>
           </button>
         </div>

@@ -1,7 +1,8 @@
 import axios from "axios";
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import FavoritesList from "../components/FavoriteList";
 import Card from "../components/WordCard";
+import { SelectedWordContext } from "../contexts/SelectedWordContext";
 import { validateInput } from "../validatedInput";
 import "./Landingpage.css";
 
@@ -36,6 +37,9 @@ function Landingpage() {
   const [activeAudio, setActiveAudio] = useState<string | null>(null);
   const [isSubmitted, setIsSubmitted] = useState(false);
 
+  const { selectedWord: favoriteWord, setSelectedWord: setFavoriteWord } =
+    useContext(SelectedWordContext);
+
   const fetchWords = async () => {
     if (selectedWord !== "") {
       try {
@@ -65,6 +69,7 @@ function Landingpage() {
   }, [isSubmitted]);
 
   const handleSelect = () => {
+    setFavoriteWord(null);
     setErrorMessage(null);
     const errors = validateInput(selectedWord);
     console.log(errors);
@@ -96,6 +101,8 @@ function Landingpage() {
       audioRef.current.play();
     }
   };
+
+  const wordToRender: Word | null = favoriteWord || searchedWord;
 
   return (
     <>
@@ -138,9 +145,9 @@ function Landingpage() {
                 </div>
               ))}
           </div>
-          {searchedWord && (
+          {wordToRender && (
             <Card
-              word={searchedWord}
+              word={wordToRender}
               activeAudio={activeAudio}
               playAudio={playAudio}
             />

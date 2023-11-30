@@ -27,22 +27,22 @@ describe("Dark Mode toggle", () => {
   it("starts in light mode and toggles between light and dark mode", () => {
     render(<App />);
 
-    const toggleButton = screen.getByRole("button", { name: /Light/i });
+    const toggleButton = screen.getByRole("button", { name: /Dark/i });
     const appDiv = document.querySelector(".App");
 
-    expect(toggleButton).toHaveTextContent("Light");
+    expect(toggleButton).toHaveTextContent("Dark");
     expect(appDiv).toHaveClass("light");
     expect(document.documentElement).not.toHaveClass("dark");
 
     fireEvent.click(toggleButton);
 
-    expect(toggleButton).toHaveTextContent("Dark");
+    expect(toggleButton).toHaveTextContent("Light");
     expect(appDiv).toHaveClass("dark");
     expect(document.documentElement).toHaveClass("dark");
 
     fireEvent.click(toggleButton);
 
-    expect(toggleButton).toHaveTextContent("Light");
+    expect(toggleButton).toHaveTextContent("Dark");
     expect(appDiv).toHaveClass("light");
     expect(document.documentElement).not.toHaveClass("dark");
   });
@@ -85,7 +85,16 @@ describe("Dark Mode toggle", () => {
     });
   });
 
-  // Using the mock server from mswjs here to check that everything from the API renders correctly
+  it("submits the form when enter is pressed", async () => {
+    render(<Landingpage />);
+
+    const input = screen.getByPlaceholderText("Search for a word..");
+    fireEvent.change(input, { target: { value: "book" } });
+
+    fireEvent.keyPress(input, { key: "Enter", code: "Enter" });
+
+    expect(screen.getByText("book")).toBeInTheDocument();
+  });
 
   beforeAll(() => server.listen());
   afterEach(() => server.resetHandlers());

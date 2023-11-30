@@ -1,15 +1,27 @@
 import { IconTrash } from "@tabler/icons-react";
-import React, { useContext } from "react";
-import FavoritesContext from "../FavoritesContext";
+import { useContext } from "react";
+import { FavoritesContext } from "../contexts/FavoritesContext";
+import { SelectedWordContext } from "../contexts/SelectedWordContext";
+import { Word } from "../pages/Landingpage";
 
 const FavoritesList: React.FC = () => {
-  const favoritesContext = useContext(FavoritesContext);
-  const { favorites, removeFavorite } = favoritesContext;
+  const { favorites, removeFavorite, getFavorite } =
+    useContext(FavoritesContext);
+  const { setSelectedWord } = useContext(SelectedWordContext);
+
+  const handleFavoriteClick = (word: string) => {
+    const favoriteWord = getFavorite(word);
+    if (favoriteWord) {
+      setSelectedWord(favoriteWord);
+      console.log(favoriteWord);
+    }
+  };
+
   return (
     <div className="card">
       <h2>Your Favorite Words</h2>
       {favorites.length > 0 ? (
-        favorites.map((favorite: string, index: number) => (
+        favorites.map((favorite: Word, index: number) => (
           <div key={index} style={{ marginTop: "1rem" }}>
             <div
               style={{
@@ -18,8 +30,15 @@ const FavoritesList: React.FC = () => {
                 alignItems: "",
               }}
             >
-              <p style={{ alignSelf: "flex-end", fontSize: "1.1rem" }}>
-                {favorite}
+              <p
+                style={{
+                  alignSelf: "flex-end",
+                  fontSize: "1.1rem",
+                  cursor: "pointer",
+                }}
+                onClick={() => handleFavoriteClick(favorite.word)}
+              >
+                {favorite.word}
               </p>
               <button
                 style={{
@@ -29,7 +48,7 @@ const FavoritesList: React.FC = () => {
                   alignItems: "center",
                   justifyContent: "center",
                 }}
-                onClick={() => removeFavorite(favorite)}
+                onClick={() => removeFavorite(favorite.word)}
               >
                 <IconTrash style={{ marginRight: "0.5rem" }} size={20} />
                 Remove

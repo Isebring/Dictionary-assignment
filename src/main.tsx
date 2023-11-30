@@ -1,13 +1,16 @@
 import React from "react";
 import ReactDOM from "react-dom/client";
 import App from "./App";
+import { FavoritesProvider } from "./contexts/FavoritesContext";
+import { SelectedWordProvider } from "./contexts/SelectedWordContext";
 import "./main.css";
-import { FavoritesProvider } from "./FavoritesContext";
 
 ReactDOM.createRoot(document.getElementById("root") as HTMLElement).render(
   <React.StrictMode>
     <FavoritesProvider>
-      <App />
+      <SelectedWordProvider>
+        <App />
+      </SelectedWordProvider>
     </FavoritesProvider>
   </React.StrictMode>
 );

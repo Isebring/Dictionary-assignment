@@ -1,22 +1,25 @@
 import { FC, ReactNode, createContext, useState } from "react";
+import { Word } from "../pages/Landingpage";
 
 interface FavoritesContextType {
-  favorites: string[];
-  addFavorite: (word: string) => void;
+  favorites: Word[];
+  addFavorite: (word: Word) => void;
   removeFavorite: (word: string) => void;
   isFavorite: (word: string) => boolean;
+  getFavorite: (word: string) => Word | undefined;
 }
 
-interface FavoritesProviderProps {
-  children: ReactNode;
-}
-
-const FavoritesContext = createContext<FavoritesContextType>({
+export const FavoritesContext = createContext<FavoritesContextType>({
   favorites: [],
   addFavorite: () => {},
   removeFavorite: () => {},
   isFavorite: () => false,
+  getFavorite: () => undefined,
 });
+
+interface FavoritesProviderProps {
+  children: ReactNode;
+}
 
 export const FavoritesProvider: FC<FavoritesProviderProps> = ({ children }) => {
   const getFavorites = () => {
@@ -24,9 +27,9 @@ export const FavoritesProvider: FC<FavoritesProviderProps> = ({ children }) => {
     return savedFavorites ? JSON.parse(savedFavorites) : [];
   };
 
-  const [favorites, setFavorites] = useState(getFavorites());
+  const [favorites, setFavorites] = useState<Word[]>(getFavorites());
 
-  const addFavorite = (word: string) => {
+  const addFavorite = (word: Word) => {
     const newFavorites = [...favorites, word];
     setFavorites(newFavorites);
     sessionStorage.setItem("favorites", JSON.stringify(newFavorites));
@@ -35,22 +38,29 @@ export const FavoritesProvider: FC<FavoritesProviderProps> = ({ children }) => {
 
   const removeFavorite = (word: string) => {
     const newFavorites = favorites.filter(
-      (favorite: string) => favorite !== word
+      (favorite: Word) => favorite.word !== word
     );
     setFavorites(newFavorites);
     sessionStorage.setItem("favorites", JSON.stringify(newFavorites));
-    setFavorites(getFavorites());
   };
 
-  const isFavorite = (word: string) => favorites.includes(word);
+  const isFavorite = (word: string) =>
+    favorites.some((favorite: Word) => favorite.word === word);
+
+  const getFavorite = (word: string) =>
+    favorites.find((favorite: Word) => favorite.word === word);
 
   return (
     <FavoritesContext.Provider
-      value={{ favorites, addFavorite, removeFavorite, isFavorite }}
+      value={{
+        favorites,
+        addFavorite,
+        removeFavorite,
+        isFavorite,
+        getFavorite,
+      }}
     >
       {children}
     </FavoritesContext.Provider>
   );
 };
-
-export default FavoritesContext;

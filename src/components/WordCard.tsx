@@ -1,6 +1,6 @@
 import { IconHeart, IconVolume } from "@tabler/icons-react";
 import React, { useContext, useEffect, useRef } from "react";
-import FavoritesContext from "../FavoritesContext";
+import { FavoritesContext } from "../contexts/FavoritesContext";
 import { Word } from "../pages/Landingpage";
 
 interface WordCardProps {
@@ -33,7 +33,7 @@ const Card: React.FC<WordCardProps> = ({ word, activeAudio }) => {
     if (isFavorite(word.word)) {
       removeFavorite(word.word);
     } else {
-      addFavorite(word.word);
+      addFavorite(word);
     }
   };
 
@@ -84,7 +84,7 @@ const Card: React.FC<WordCardProps> = ({ word, activeAudio }) => {
               />
               <p
                 style={{
-                  fontWeight: "700",
+                  fontStyle: "italic",
                   fontSize: "1.1rem",
                   marginBottom: "1rem",
                 }}
