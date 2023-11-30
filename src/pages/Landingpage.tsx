@@ -96,6 +96,17 @@ function Landingpage() {
     }
   }, [searchedWord]);
 
+  useEffect(() => {
+    if (favoriteWord) {
+      const audioPhonetic = favoriteWord.phonetics.find(
+        (phonetic) => phonetic.audio
+      );
+      if (audioPhonetic) {
+        setActiveAudio(audioPhonetic.audio!);
+      }
+    }
+  }, [favoriteWord]);
+
   const playAudio = () => {
     if (audioRef.current) {
       audioRef.current.play();

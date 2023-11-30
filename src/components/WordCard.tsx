@@ -6,7 +6,7 @@ import { Word } from "../pages/Landingpage";
 interface WordCardProps {
   word: Word;
   activeAudio: string | null;
-  playAudio: () => void;
+  playAudio?: () => void;
 }
 
 const Card: React.FC<WordCardProps> = ({ word, activeAudio }) => {
@@ -40,6 +40,7 @@ const Card: React.FC<WordCardProps> = ({ word, activeAudio }) => {
   return (
     <div>
       <IconHeart
+        role="button"
         style={{ marginTop: "1rem" }}
         fill={isFavorite(word.word) ? "red" : "none"}
         stroke={isFavorite(word.word) ? "red" : "black"}

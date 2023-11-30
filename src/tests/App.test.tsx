@@ -22,6 +22,19 @@ test("renders h1 tag correctly", () => {
   expect(h1Element.textContent).toBe("My Dictionary.");
 });
 
+it("submits the form when enter is pressed", async () => {
+  render(<Landingpage />);
+
+  const input = screen.getByPlaceholderText("Search for a word..");
+  fireEvent.change(input, { target: { value: "book" } });
+
+  fireEvent.keyPress(input, { key: "Enter", code: "Enter" });
+
+  expect(
+    await screen.findByRole("heading", { level: 2, name: /book/i })
+  ).toBeInTheDocument();
+});
+
 // Check so that the page starts in light mode and correctly shifts between light and dark when the user clicks.
 describe("Dark Mode toggle", () => {
   it("starts in light mode and toggles between light and dark mode", () => {
@@ -83,17 +96,6 @@ describe("Dark Mode toggle", () => {
       result = validateInput(validInput);
       expect(result).toEqual({});
     });
-  });
-
-  it("submits the form when enter is pressed", async () => {
-    render(<Landingpage />);
-
-    const input = screen.getByPlaceholderText("Search for a word..");
-    fireEvent.change(input, { target: { value: "book" } });
-
-    fireEvent.keyPress(input, { key: "Enter", code: "Enter" });
-
-    expect(screen.getByText("book")).toBeInTheDocument();
   });
 
   beforeAll(() => server.listen());
