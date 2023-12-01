@@ -1,4 +1,4 @@
-import { fireEvent, render, screen } from "@testing-library/react";
+import { fireEvent, render, screen } from '@testing-library/react';
 import {
   afterAll,
   afterEach,
@@ -7,90 +7,90 @@ import {
   expect,
   it,
   test,
-} from "vitest";
-import App from "../App";
-import Landingpage from "../pages/Landingpage";
-import { server } from "../server";
-import { validateInput } from "../validatedInput";
+} from 'vitest';
+import App from '../App';
+import Landingpage from '../pages/Landingpage';
+import { server } from '../server';
+import { validateInput } from '../validatedInput';
 
 // Check so that the <h1> renders correctly
-test("renders h1 tag correctly", () => {
+test('renders h1 tag correctly', () => {
   render(<App />);
 
-  const h1Element = screen.getByRole("heading", { level: 1 });
+  const h1Element = screen.getByRole('heading', { level: 1 });
   expect(h1Element).toBeInTheDocument();
-  expect(h1Element.textContent).toBe("My Dictionary.");
+  expect(h1Element.textContent).toBe('My Dictionary.');
 });
 
-it("submits the form when enter is pressed", async () => {
+it('submits the form when enter is pressed', async () => {
   render(<Landingpage />);
 
-  const input = screen.getByPlaceholderText("Search for a word..");
-  fireEvent.change(input, { target: { value: "book" } });
+  const input = screen.getByPlaceholderText('Search for a word..');
+  fireEvent.change(input, { target: { value: 'book' } });
 
-  fireEvent.keyPress(input, { key: "Enter", code: "Enter" });
+  fireEvent.keyPress(input, { key: 'Enter', code: 'Enter' });
 
   expect(
-    await screen.findByRole("heading", { level: 2, name: /book/i })
+    await screen.findByRole('heading', { level: 2, name: /book/i })
   ).toBeInTheDocument();
 });
 
 // Check so that the page starts in light mode and correctly shifts between light and dark when the user clicks.
-describe("Dark Mode toggle", () => {
-  it("starts in light mode and toggles between light and dark mode", () => {
+describe('Dark Mode toggle', () => {
+  it('starts in light mode and toggles between light and dark mode', () => {
     render(<App />);
 
-    const toggleButton = screen.getByRole("button", { name: /Dark/i });
-    const appDiv = document.querySelector(".App");
+    const toggleButton = screen.getByRole('button', { name: /Dark/i });
+    const appDiv = document.querySelector('.App');
 
-    expect(toggleButton).toHaveTextContent("Dark");
-    expect(appDiv).toHaveClass("light");
-    expect(document.documentElement).not.toHaveClass("dark");
-
-    fireEvent.click(toggleButton);
-
-    expect(toggleButton).toHaveTextContent("Light");
-    expect(appDiv).toHaveClass("dark");
-    expect(document.documentElement).toHaveClass("dark");
+    expect(toggleButton).toHaveTextContent('Dark');
+    expect(appDiv).toHaveClass('light');
+    expect(document.documentElement).not.toHaveClass('dark');
 
     fireEvent.click(toggleButton);
 
-    expect(toggleButton).toHaveTextContent("Dark");
-    expect(appDiv).toHaveClass("light");
-    expect(document.documentElement).not.toHaveClass("dark");
+    expect(toggleButton).toHaveTextContent('Light');
+    expect(appDiv).toHaveClass('dark');
+    expect(document.documentElement).toHaveClass('dark');
+
+    fireEvent.click(toggleButton);
+
+    expect(toggleButton).toHaveTextContent('Dark');
+    expect(appDiv).toHaveClass('light');
+    expect(document.documentElement).not.toHaveClass('dark');
   });
 
   // Checks that the validation works depending on user input
-  describe("Landingpage component", () => {
-    test("renders error message correctly", async () => {
+  describe('Landingpage component', () => {
+    test('renders error message correctly', async () => {
       render(<Landingpage />);
 
-      const inputField = screen.getByPlaceholderText("Search for a word..");
-      const button = screen.getByText("Search");
+      const inputField = screen.getByPlaceholderText('Search for a word..');
+      const button = screen.getByText('Search');
 
       fireEvent.click(button);
-      let errorMessage = await screen.findByText("Please enter a word!");
+      let errorMessage = await screen.findByText('Please enter a word!');
       expect(errorMessage).toBeInTheDocument();
 
-      fireEvent.change(inputField, { target: { value: "hello@world" } });
+      fireEvent.change(inputField, { target: { value: 'hello@world' } });
       fireEvent.click(button);
       errorMessage = await screen.findByText(
-        "Input contains special characters!"
+        'Input contains special characters!'
       );
       expect(errorMessage).toBeInTheDocument();
     });
 
-    test("validates input correctly", () => {
-      const emptyInput = "";
-      const inputWithSpecialChar = "hello@world";
-      const validInput = "hello world";
+    test('validates input correctly', () => {
+      const emptyInput = '';
+      const inputWithSpecialChar = 'hello@world';
+      const validInput = 'hello world';
 
       let result = validateInput(emptyInput);
-      expect(result).toEqual({ empty: "Please enter a word!" });
+      expect(result).toEqual({ empty: 'Please enter a word!' });
 
       result = validateInput(inputWithSpecialChar);
       expect(result).toEqual({
-        specialChars: "Input contains special characters!",
+        specialChars: 'Input contains special characters!',
       });
 
       result = validateInput(validInput);
@@ -102,20 +102,20 @@ describe("Dark Mode toggle", () => {
   afterEach(() => server.resetHandlers());
   afterAll(() => server.close());
 
-  describe("Landingpage component", () => {
-    it("fetches and displays word data when a valid word is searched", async () => {
+  describe('Landingpage component', () => {
+    it('fetches and displays word data when a valid word is searched', async () => {
       render(<Landingpage />);
-      const inputField = screen.getByPlaceholderText("Search for a word..");
-      const searchButton = screen.getByRole("button", { name: /search/i });
+      const inputField = screen.getByPlaceholderText('Search for a word..');
+      const searchButton = screen.getByRole('button', { name: /search/i });
 
-      fireEvent.change(inputField, { target: { value: "test" } });
+      fireEvent.change(inputField, { target: { value: 'test' } });
       fireEvent.click(searchButton);
 
       expect(
-        await screen.findByRole("heading", { name: /test/i })
+        await screen.findByRole('heading', { name: /test/i })
       ).toBeInTheDocument();
 
-      expect(await screen.findByRole("audio")).toBeInTheDocument();
+      expect(await screen.findByRole('audio')).toBeInTheDocument();
 
       const phoneticItems = await screen.findAllByText(/\/.*\//);
       expect(phoneticItems).not.toHaveLength(0);
@@ -141,17 +141,17 @@ describe("Dark Mode toggle", () => {
       expect(originItem).toBeInTheDocument();
     });
 
-    it("displays an error message when a word is not found", async () => {
+    it('displays an error message when a word is not found', async () => {
       render(<Landingpage />);
-      const inputField = screen.getByPlaceholderText("Search for a word..");
-      const searchButton = screen.getByText("Search");
+      const inputField = screen.getByPlaceholderText('Search for a word..');
+      const searchButton = screen.getByText('Search');
 
-      fireEvent.change(inputField, { target: { value: "invalidword" } });
+      fireEvent.change(inputField, { target: { value: 'invalidword' } });
       fireEvent.click(searchButton);
       screen.debug();
-      await screen.findByText("Word not found!");
+      await screen.findByText('Word not found!');
 
-      expect(screen.getByText("Word not found!")).toBeInTheDocument();
+      expect(screen.getByText('Word not found!')).toBeInTheDocument();
     });
   });
 });

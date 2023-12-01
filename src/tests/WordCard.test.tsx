@@ -1,28 +1,28 @@
-import { fireEvent, render, screen } from "@testing-library/react";
-import { expect, test, vi } from "vitest";
-import Card from "../components/WordCard";
-import { FavoritesContext } from "../contexts/FavoritesContext";
-import { Word } from "../pages/Landingpage";
+import { fireEvent, render, screen } from '@testing-library/react';
+import { expect, test, vi } from 'vitest';
+import Card from '../components/WordCard';
+import { FavoritesContext } from '../contexts/FavoritesContext';
+import { Word } from '../pages/Landingpage';
 
 const word: Word = {
-  word: "word",
-  phonetics: [{ text: "wɜːrd", audio: "https://audio.com/audio1.mp3" }],
-  origin: "Old English",
+  word: 'word',
+  phonetics: [{ text: 'wɜːrd', audio: 'https://audio.com/audio1.mp3' }],
+  origin: 'Old English',
   meanings: [
     {
-      partOfSpeech: "noun",
+      partOfSpeech: 'noun',
       definitions: [
         {
           definition:
-            "A single distinct meaningful element of speech or writing.",
-          example: "Words are the basic building blocks of language.",
+            'A single distinct meaningful element of speech or writing.',
+          example: 'Words are the basic building blocks of language.',
         },
       ],
-      synonyms: ["term", "expression"],
-      antonyms: ["silence"],
+      synonyms: ['term', 'expression'],
+      antonyms: ['silence'],
     },
   ],
-  sourceUrls: "http://example.com",
+  sourceUrls: 'http://example.com',
 };
 
 let mockIsFavorite = vi.fn();
@@ -51,42 +51,43 @@ function renderCard() {
   );
 }
 
-test("calls addFavorite only once when the Heart icon is clicked", () => {
+test('calls addFavorite only once when the Heart icon is clicked', () => {
   mockIsFavorite.mockReturnValue(false);
   renderCard();
 
-  const heartIcon = screen.getByRole("button");
+  const heartIcon = screen.getByRole('button');
   fireEvent.click(heartIcon);
 
   expect(mockAddFavorite).toHaveBeenCalledTimes(1);
 });
 
-test("does not call addFavorite when the Heart icon is clicked and the word is a favorite", () => {
+test('does not call addFavorite when the Heart icon is clicked and the word is a favorite', () => {
   mockIsFavorite.mockReturnValue(true);
   renderCard();
 
-  const heartIcon = screen.getByRole("button");
+  const heartIcon = screen.getByRole('button');
   fireEvent.click(heartIcon);
 
   expect(mockAddFavorite).not.toHaveBeenCalled();
 });
 
-test("adds word to favorites when the Heart icon is clicked", () => {
+test('adds word to favorites when the Heart icon is clicked', () => {
   mockIsFavorite.mockReturnValue(false);
   renderCard();
 
-  const heartIcon = screen.getByRole("button");
+  const heartIcon = screen.getByRole('button');
   fireEvent.click(heartIcon);
 
   expect(mockAddFavorite.mock.calls[0][0]).toEqual(word);
 });
 
-test("changes Heart icon color when the Heart icon is clicked and the word is not a favorite", () => {
+test('changes Heart icon color when the Heart icon is clicked and the word is not a favorite', () => {
   mockIsFavorite.mockReturnValue(false);
   renderCard();
 
-  const heartIcon = screen.getByRole("button");
+  const heartIcon = screen.getByRole('button', { name: 'heart' });
   fireEvent.click(heartIcon);
 
-  expect(heartIcon).toHaveStyle({ fill: "red", stroke: "red" });
+  expect(heartIcon).toHaveAttribute('fill', 'red');
+  expect(heartIcon).toHaveAttribute('stroke', 'red');
 });

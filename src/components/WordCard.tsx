@@ -1,7 +1,7 @@
-import { IconHeart, IconVolume } from "@tabler/icons-react";
-import React, { useContext, useEffect, useRef } from "react";
-import { FavoritesContext } from "../contexts/FavoritesContext";
-import { Word } from "../pages/Landingpage";
+import { IconHeart, IconVolume } from '@tabler/icons-react';
+import React, { useContext, useEffect, useRef } from 'react';
+import { FavoritesContext } from '../contexts/FavoritesContext';
+import { Word } from '../pages/Landingpage';
 
 interface WordCardProps {
   word: Word;
@@ -40,13 +40,14 @@ const Card: React.FC<WordCardProps> = ({ word, activeAudio }) => {
   return (
     <div>
       <IconHeart
+        aria-label="heart"
         role="button"
-        style={{ marginTop: "1rem" }}
-        fill={isFavorite(word.word) ? "red" : "none"}
-        stroke={isFavorite(word.word) ? "red" : "black"}
+        style={{ marginTop: '1rem' }}
+        fill={isFavorite(word.word) ? 'red' : 'none'}
+        stroke={isFavorite(word.word) ? 'red' : 'black'}
         onClick={toggleFavorite}
       />
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
+      <div style={{ display: 'flex', justifyContent: 'space-between' }}>
         <h2>{word.word}</h2>
 
         {word.phonetics && (
@@ -55,7 +56,7 @@ const Card: React.FC<WordCardProps> = ({ word, activeAudio }) => {
               <div>
                 <audio role="audio" ref={audioRef} />
                 <source src={activeAudio} type="audio/mpeg" />
-                <IconVolume style={{ cursor: "pointer" }} onClick={playAudio} />
+                <IconVolume style={{ cursor: 'pointer' }} onClick={playAudio} />
               </div>
             )}
             {word.phonetics.slice(0, 5).map((phonetic, index) => (
@@ -63,7 +64,7 @@ const Card: React.FC<WordCardProps> = ({ word, activeAudio }) => {
                 <p>{phonetic.text}</p>
               </div>
             ))}
-            {word.phonetics.length > 5 && "..."}
+            {word.phonetics.length > 5 && '...'}
           </div>
         )}
       </div>
@@ -80,14 +81,14 @@ const Card: React.FC<WordCardProps> = ({ word, activeAudio }) => {
           return (
             <div key={index}>
               <hr
-                style={{ marginTop: "0.5rem", marginBottom: "0.5rem" }}
+                style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }}
                 className="hr-style"
               />
               <p
                 style={{
-                  fontStyle: "italic",
-                  fontSize: "1.1rem",
-                  marginBottom: "1rem",
+                  fontStyle: 'italic',
+                  fontSize: '1.1rem',
+                  marginBottom: '1rem',
                 }}
               >
                 {meaning.partOfSpeech}
@@ -113,8 +114,8 @@ const Card: React.FC<WordCardProps> = ({ word, activeAudio }) => {
                 <div>
                   <h4>Synonyms:</h4>
                   <p>
-                    {meaning.synonyms.slice(0, 5).join(", ")}
-                    {meaning.synonyms.length > 6 && ",..."}
+                    {meaning.synonyms.slice(0, 5).join(', ')}
+                    {meaning.synonyms.length > 6 && ',...'}
                   </p>
                 </div>
               )}
@@ -122,8 +123,8 @@ const Card: React.FC<WordCardProps> = ({ word, activeAudio }) => {
                 <div>
                   <h4>Antonyms:</h4>
                   <p>
-                    {meaning.antonyms.slice(0, 5).join(", ")}
-                    {meaning.antonyms.length > 6 && ",..."}
+                    {meaning.antonyms.slice(0, 5).join(', ')}
+                    {meaning.antonyms.length > 6 && ',...'}
                   </p>
                 </div>
               )}
@@ -131,11 +132,11 @@ const Card: React.FC<WordCardProps> = ({ word, activeAudio }) => {
           );
         })}
       <hr
-        style={{ marginTop: "0.5rem", marginBottom: "0.5rem" }}
+        style={{ marginTop: '0.5rem', marginBottom: '0.5rem' }}
         className="hr-style"
       />
       {word.sourceUrls && (
-        <div style={{ marginTop: "1rem" }}>
+        <div style={{ marginTop: '1rem' }}>
           <h4>Source:</h4>
           <a
             href={word.sourceUrls}
