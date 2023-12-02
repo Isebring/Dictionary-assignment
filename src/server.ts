@@ -1,20 +1,27 @@
-import { rest } from 'msw'
-import { setupServer } from 'msw/node'
+import { rest } from 'msw';
+import { setupServer } from 'msw/node';
 
 export const handlers = [
-  rest.get('https://api.dictionaryapi.dev/api/v2/entries/en/test', (req, res, ctx) => {
+  rest.get('https://api.dictionaryapi.dev/api/v2/entries/en/:word', (req, res, ctx) => {
+ 
+    const { word } = req.params;
+
+    if (word === 'invalidword') {
+      return res(ctx.status(404));
+    }
+
     return res(
       ctx.status(200),
       ctx.json([
         {
-          word: 'test',
+          word: word,
           phonetics: [
             {
               text: '/tɛst/',
               audio: 'https://test.com/test.mp3',
             },
           ],
-          origin: 'Origin of test',
+          origin: 'Origin of ' + word,
           meanings: [
             {
               synonyms: ['trial', 'experiment'],
@@ -23,7 +30,7 @@ export const handlers = [
               definitions: [
                 {
                   definition: 'A procedure intended to establish...',
-                  example: 'This is a test.',
+                  example: 'This is a ' + word + '.',
                 },
               ],
             },
@@ -31,9 +38,6 @@ export const handlers = [
         },
       ])
     )
-  }),
-  rest.get('https://api.dictionaryapi.dev/api/v2/entries/en/invalidword', (req, res, ctx) => {
-    return res(ctx.status(404))
   }),
 ]
 

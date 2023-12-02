@@ -16,10 +16,15 @@ function Header() {
   const toggleDarkMode = () => {
     setDarkMode(!darkMode);
   };
+
   return (
     <>
       <header>
-        <h1 className="text-style">
+        <h1
+          style={{ cursor: "pointer" }}
+          className="text-style"
+          onClick={() => (window.location.href = "/")}
+        >
           My Dictionary
           <span style={{ color: "#89CFF0" }}>.</span>
         </h1>
