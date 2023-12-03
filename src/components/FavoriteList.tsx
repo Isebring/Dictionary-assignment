@@ -9,6 +9,7 @@ const FavoritesList: React.FC = () => {
     useContext(FavoritesContext);
   const { setSelectedWord } = useContext(SelectedWordContext);
 
+  // Click handler for favorite words
   const handleFavoriteClick = (word: string) => {
     const favoriteWord = getFavorite(word);
     if (favoriteWord) {

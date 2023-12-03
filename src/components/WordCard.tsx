@@ -9,9 +9,10 @@ interface WordCardProps {
   playAudio?: () => void;
 }
 
-const Card: React.FC<WordCardProps> = ({ word, activeAudio }) => {
+const WordCard: React.FC<WordCardProps> = ({ word, activeAudio }) => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
+  // When the activeAudio prop changes, update the src of the audio element
   useEffect(() => {
     if (audioRef.current && activeAudio) {
       audioRef.current.src = activeAudio;
@@ -19,6 +20,7 @@ const Card: React.FC<WordCardProps> = ({ word, activeAudio }) => {
     }
   }, [activeAudio]);
 
+  // Function to play the audio
   const playAudio = () => {
     if (audioRef.current) {
       audioRef.current.play();
@@ -29,6 +31,7 @@ const Card: React.FC<WordCardProps> = ({ word, activeAudio }) => {
 
   const { addFavorite, removeFavorite, isFavorite } = favoritesContext;
 
+  // Function to add or remove a word from the favorites
   const toggleFavorite = () => {
     if (isFavorite(word.word)) {
       removeFavorite(word.word);
@@ -140,6 +143,7 @@ const Card: React.FC<WordCardProps> = ({ word, activeAudio }) => {
         <div style={{ marginTop: "1rem" }}>
           <h4>Source:</h4>
           <a
+            aria-label="Test Link"
             href={word.sourceUrls}
             target="_blank"
             rel="noopener noreferrer"
@@ -153,4 +157,4 @@ const Card: React.FC<WordCardProps> = ({ word, activeAudio }) => {
   );
 };
 
-export default Card;
+export default WordCard;

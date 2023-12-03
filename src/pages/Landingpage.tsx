@@ -40,6 +40,7 @@ function Landingpage() {
   const { selectedWord: favoriteWord, setSelectedWord: setFavoriteWord } =
     useContext(SelectedWordContext);
 
+  // Function to fetch words from the API
   const fetchWords = async () => {
     if (selectedWord !== "") {
       try {
@@ -62,12 +63,14 @@ function Landingpage() {
     }
   };
 
+  // Fetch words when isSubmitted changes
   useEffect(() => {
     if (isSubmitted) {
       fetchWords();
     }
   }, [isSubmitted]);
 
+  // Function to handle the selection of a word
   const handleSelect = () => {
     setFavoriteWord(null);
     setErrorMessage(null);
@@ -85,6 +88,7 @@ function Landingpage() {
     handleSelect();
   };
 
+  // Update activeAudio when searchedWord changes
   useEffect(() => {
     if (searchedWord) {
       const audioPhonetic = searchedWord.phonetics.find(
@@ -96,6 +100,7 @@ function Landingpage() {
     }
   }, [searchedWord]);
 
+  // Update activeAudio when favoriteWord changes
   useEffect(() => {
     if (favoriteWord) {
       const audioPhonetic = favoriteWord.phonetics.find(
@@ -107,12 +112,14 @@ function Landingpage() {
     }
   }, [favoriteWord]);
 
+  // Function to play the audio
   const playAudio = () => {
     if (audioRef.current) {
       audioRef.current.play();
     }
   };
 
+  // Determine which word to render
   const wordToRender: Word | null = favoriteWord || searchedWord;
 
   return (

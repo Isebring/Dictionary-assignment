@@ -9,6 +9,7 @@ interface FavoritesContextType {
   getFavorite: (word: string) => Word | undefined;
 }
 
+// Create the context with default values
 export const FavoritesContext = createContext<FavoritesContextType>({
   favorites: [],
   addFavorite: () => {},
@@ -29,6 +30,7 @@ export const FavoritesProvider: FC<FavoritesProviderProps> = ({ children }) => {
 
   const [favorites, setFavorites] = useState<Word[]>(getFavorites());
 
+  // Add a word to favorites
   const addFavorite = (word: Word) => {
     const newFavorites = [...favorites, word];
     setFavorites(newFavorites);
@@ -36,6 +38,7 @@ export const FavoritesProvider: FC<FavoritesProviderProps> = ({ children }) => {
     setFavorites(getFavorites());
   };
 
+  // Remove a word to favorites
   const removeFavorite = (word: string) => {
     const newFavorites = favorites.filter(
       (favorite: Word) => favorite.word !== word
@@ -44,9 +47,11 @@ export const FavoritesProvider: FC<FavoritesProviderProps> = ({ children }) => {
     sessionStorage.setItem("favorites", JSON.stringify(newFavorites));
   };
 
+  // Check if a word is a favorite
   const isFavorite = (word: string) =>
     favorites.some((favorite: Word) => favorite.word === word);
 
+  // Get a specific favorite word
   const getFavorite = (word: string) =>
     favorites.find((favorite: Word) => favorite.word === word);
 

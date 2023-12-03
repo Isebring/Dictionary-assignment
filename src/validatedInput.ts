@@ -1,3 +1,9 @@
+
+/**
+ * Validates that the input string is non-empty and contains only word characters or whitespace.
+ * @param input - The input string to validate.
+ * @return An object containing error messages for each failed validation rule.
+ */
 export const validateInput = (input: string) => {
     let errors = {};
   

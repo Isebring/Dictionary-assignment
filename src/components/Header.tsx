@@ -1,5 +1,6 @@
 import { IconMoon, IconSun } from "@tabler/icons-react";
 import { useEffect, useState } from "react";
+import { navigate } from "../navigator";
 import "./Header.css";
 
 function Header() {
@@ -23,7 +24,7 @@ function Header() {
         <h1
           style={{ cursor: "pointer" }}
           className="text-style"
-          onClick={() => (window.location.href = "/")}
+          onClick={() => navigate("/")}
         >
           My Dictionary
           <span style={{ color: "#89CFF0" }}>.</span>

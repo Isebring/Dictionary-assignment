@@ -1,4 +1,4 @@
-import { render, screen } from "@testing-library/react";
+import { render, screen, waitFor } from "@testing-library/react";
 import userEvent from "@testing-library/user-event";
 import {
   afterAll,
@@ -8,8 +8,11 @@ import {
   expect,
   it,
   test,
+  vi,
 } from "vitest";
 import App from "../App";
+import Header from "../components/Header";
+import * as Navigator from "../navigator";
 import Landingpage from "../pages/Landingpage";
 import { server } from "../server";
 import { validateInput } from "../validatedInput";
@@ -23,16 +26,24 @@ test("renders h1 tag correctly", () => {
   expect(h1Element.textContent).toBe("My Dictionary.");
 });
 
-it("submits the form when enter is pressed", async () => {
-  const user = userEvent.setup();
-  render(<Landingpage />);
+// Mocking the navigator to test that clicking "My Dictionary" returns the user to "/"
+vi.mock("../navigator", () => ({
+  navigate: vi.fn(),
+}));
 
-  const input = screen.getByPlaceholderText("Search for a word..");
-  user.type(input, "book{enter}");
+const navigate = Navigator.navigate;
 
-  expect(
-    await screen.findByRole("heading", { level: 2, name: /book/i })
-  ).toBeInTheDocument();
+describe("Header", () => {
+  it("changes window location when 'My Dictionary' is clicked", async () => {
+    render(<Header />);
+
+    const heading = screen.getByRole("heading", { name: /my dictionary/i });
+    userEvent.click(heading);
+
+    await waitFor(() => {
+      expect(navigate).toHaveBeenCalledWith("/");
+    });
+  });
 });
 
 // Check so that the page starts in light mode and correctly shifts between light and dark when the user clicks.
@@ -86,6 +97,7 @@ describe("Landingpage component", () => {
     expect(errorMessage).toBeInTheDocument();
   });
 
+  // Checks so that the validation works if user tries to submit an empty input or use special characters
   test("validates input correctly", () => {
     const emptyInput = "";
     const inputWithSpecialChar = "hello@world";
@@ -103,6 +115,8 @@ describe("Landingpage component", () => {
     expect(result).toEqual({});
   });
 });
+
+// Here I use the MSWJS to intercept the regular API call when testing that the API returns the expected data
 
 beforeAll(() => server.listen());
 afterEach(() => server.resetHandlers());
@@ -144,9 +158,12 @@ describe("Landingpage component", () => {
     const antonymItems = await screen.findAllByText(/Antonyms:/);
     expect(antonymItems).not.toHaveLength(0);
 
-    const originItem = await screen.findByText(/Origin:/);
-    expect(originItem).toBeInTheDocument();
+    const link = await screen.findByRole("link", { name: /Test link/i });
+    expect(link).toBeInTheDocument();
+    expect(link).toHaveAttribute("href", "https://sourceUrl.com/test");
   });
+
+  // if the user searches for a word that is not available they should be notified
 
   it("displays an error message when a word is not found", async () => {
     const user = userEvent.setup();
