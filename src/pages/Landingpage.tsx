@@ -140,10 +140,7 @@ function Landingpage() {
                 }
               }}
             />
-            <button
-              style={{ height: "3rem", marginLeft: "1rem" }}
-              onClick={handleSelect}
-            >
+            <button style={{ height: "3rem", marginLeft: "1rem" }}>
               Search
             </button>
           </div>
