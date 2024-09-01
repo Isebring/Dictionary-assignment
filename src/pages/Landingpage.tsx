@@ -140,7 +140,10 @@ function Landingpage() {
                 }
               }}
             />
-            <button style={{ height: "3rem", marginLeft: "1rem" }}>
+            <button
+              type="submit"
+              style={{ height: "3rem", marginLeft: "1rem" }}
+            >
               Search
             </button>
           </div>
