@@ -66,7 +66,10 @@ function Landingpage() {
   // Fetch words when isSubmitted changes
   useEffect(() => {
     if (isSubmitted) {
-      fetchWords();
+      fetchWords().then(() => {
+        // Force a re-render if necessary
+        setIsSubmitted(false); // Reset this state to allow future searches
+      });
     }
   }, [isSubmitted]);
 
