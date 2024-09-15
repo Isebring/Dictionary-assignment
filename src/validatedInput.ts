@@ -5,13 +5,13 @@
  * @return An object containing error messages for each failed validation rule.
  */
 export const validateInput = (input: string) => {
-    let errors = {};
-  
-    if (!input.trim()) {
-      errors = { ...errors, empty: 'Please enter a word!' };
-    } else if (!/^[\w\s]+$/.test(input)) {
-      errors = { ...errors, specialChars: 'Input contains special characters!' };
-    }
-  
-    return errors;
-  };
+  let errors = {};
+
+  if (!input.trim()) {
+    errors = { ...errors, empty: 'Please enter a word!' };
+  } else if (!/^[a-zA-Z\s-]+$/.test(input)) {
+    errors = { ...errors, specialChars: 'Input contains invalid characters!' };
+  }
+
+  return errors;
+};

@@ -50,8 +50,10 @@ function Landingpage() {
         console.log(response);
         setData(response.data);
         const word =
-          response.data.find((word: Word) => word.word === selectedWord) ||
-          null;
+          response.data.find(
+            (word: Word) =>
+              word.word.toLowerCase() === selectedWord.toLowerCase()
+          ) || null;
         setSearchedWord(word);
       } catch (error) {
         if (axios.isAxiosError(error) && error.response?.status === 404) {
@@ -59,6 +61,8 @@ function Landingpage() {
         } else {
           console.error(`Error: ${error}`);
         }
+      } finally {
+        setIsSubmitted(false); // Reset after the API call and word search are completed
       }
     }
   };
@@ -88,6 +92,7 @@ function Landingpage() {
 
   const handleFormSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    setSelectedWord((prevWord) => prevWord.trim()); // Trim the input before processing
     handleSelect();
   };
 
@@ -136,8 +141,16 @@ function Landingpage() {
               placeholder="Search for a word.."
               value={selectedWord}
               onChange={(e) => {
-                setSelectedWord(e.target.value);
-                if (e.target.value.trim() === "" || errorMessage) {
+                const inputValue = e.target.value;
+                setSelectedWord(inputValue);
+
+                // Clear the error message if the input is valid
+                const errors = validateInput(inputValue);
+                if (Object.keys(errors).length === 0) {
+                  setErrorMessage(null);
+                }
+
+                if (inputValue.trim() === "") {
                   setErrorMessage(null);
                   setIsSubmitted(false);
                 }
